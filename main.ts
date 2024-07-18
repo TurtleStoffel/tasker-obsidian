@@ -16,6 +16,18 @@ export default class MyPlugin extends Plugin {
     async onload() {
         await this.loadSettings();
 
+        this.registerEvent(
+            this.app.workspace.on("editor-menu", (menu, editor, view) => {
+                menu.addItem((item) => {
+                    item
+                        .setTitle("Add to-do item")
+                        .onClick(async () => {
+                            new Notice(view.file?.path ?? "test");
+                        });
+                });
+            })
+        );
+
         // This creates an icon in the left ribbon.
         const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
             // Called when the user clicks the icon.
