@@ -23,6 +23,7 @@ export default class MyPlugin extends Plugin {
                         .setTitle("Add to-do item")
                         .onClick(async () => {
                             new Notice(view.file?.path ?? "test");
+                            new CreateTodoItemModal(this.app).open()
                         });
                 });
             })
@@ -100,6 +101,24 @@ export default class MyPlugin extends Plugin {
 
     async saveSettings() {
         await this.saveData(this.settings);
+    }
+}
+
+class CreateTodoItemModal extends Modal {
+    constructor(app: App) {
+        super(app);
+    }
+
+    onOpen() {
+        const {contentEl} = this
+
+        contentEl.setText("Please enter a description for the to-do item.");
+    }
+
+    onClose() {
+        const {contentEl} = this
+
+        contentEl.empty()
     }
 }
 
