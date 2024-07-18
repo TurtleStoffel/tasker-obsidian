@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "Context-aware to-do lists in Obsidian",
-	"author": "Obsidian",
+	"author": "TurtleStoffel",
 	"authorUrl": "https://www.turtlestoffel.com",
 	"fundingUrl": "",
 	"isDesktopOnly": true
