@@ -9,6 +9,8 @@ import {
     Setting,
 } from "obsidian";
 
+import { createTodo } from "todo-manager";
+
 // Remember to rename these classes and interfaces!
 
 interface MyPluginSettings {
@@ -34,6 +36,8 @@ export default class MyPlugin extends Plugin {
                             new Notice(
                                 `Created a new item to-do item. ${result}`
                             );
+                            console.log("Right before creating a new todo");
+                            createTodo(this.app.vault, result);
                         }).open();
                     });
                 });
