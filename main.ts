@@ -23,7 +23,9 @@ export default class MyPlugin extends Plugin {
                         .setTitle("Add to-do item")
                         .onClick(async () => {
                             new Notice(view.file?.path ?? "test");
-                            new CreateTodoItemModal(this.app).open()
+                            new CreateTodoItemModal(this.app, (result) => {
+                                new Notice(`Created a new item to-do item. ${result}`)
+                            }).open()
                         });
                 });
             })
@@ -96,14 +98,37 @@ export default class MyPlugin extends Plugin {
 }
 
 class CreateTodoItemModal extends Modal {
-    constructor(app: App) {
+    result: string;
+    onSubmit: (result: string) => void;
+
+    constructor(app: App, onSubmit: (result: string) => void) {
         super(app);
+        this.onSubmit = onSubmit;
     }
 
     onOpen() {
         const {contentEl} = this
 
-        contentEl.setText("Please enter a description for the to-do item.");
+        contentEl.createEl("h1", { text: "Enter to-do item details" });
+
+        new Setting(contentEl)
+            .setName("description")
+            .addTextArea((text) => 
+                text.onChange((value) => {
+                    this.result = value
+                })
+            );
+        
+        new Setting(contentEl)
+            .addButton((btn) => 
+                btn
+                    .setButtonText("Submit")
+                    .setCta()
+                    .onClick(() => {
+                        this.close();
+                        this.onSubmit(this.result);
+                    })
+            );
     }
 
     onClose() {
