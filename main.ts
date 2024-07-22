@@ -9,7 +9,7 @@ import {
     Setting,
 } from "obsidian";
 
-import { createTodo } from "todo-manager";
+import { createTodo } from "src/todo-manager";
 
 // Remember to rename these classes and interfaces!
 
