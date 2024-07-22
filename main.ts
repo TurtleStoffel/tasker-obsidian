@@ -61,7 +61,7 @@ export default class MyPlugin extends Plugin {
             id: "open-sample-modal-simple",
             name: "Open sample modal (simple)",
             callback: () => {
-                new SampleModal(this.app).open();
+                new CreateTodoItemModal(this.app, () => {}).open();
             },
         });
         // This adds an editor command that can perform some operation on the current editor instance
