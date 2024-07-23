@@ -9,7 +9,7 @@ import {
     Setting,
 } from "obsidian";
 
-import { createTodo } from "src/todo-manager";
+import { createTodo, getTodoItemsForFile } from "src/todo-manager";
 
 // Remember to rename these classes and interfaces!
 
@@ -37,10 +37,24 @@ export default class MyPlugin extends Plugin {
                                 `Created a new item to-do item. ${result}`
                             );
                             console.log("Right before creating a new todo");
-                            createTodo(this.app.vault, result);
+                            if (!view.file) {
+                                return;
+                            }
+                            createTodo(this.app.vault, view.file, result);
                         }).open();
                     });
                 });
+            })
+        );
+
+        this.registerEvent(
+            this.app.workspace.on("file-open", async (file) => {
+                if (!file) {
+                    return;
+                }
+                const items = await getTodoItemsForFile(file);
+
+                console.log(items);
             })
         );
 

@@ -3,22 +3,47 @@ import { TFile, Vault } from "obsidian";
 
 const FILENAME = "test.json";
 
-export async function createTodo(vault: Vault, details: string) {
+interface TodoItem {
+    details: string;
+    path: string;
+}
+
+export async function createTodo(vault: Vault, file: TFile, details: string) {
     console.log("Creating a new to-do item.");
 
     const pluginFile = await getOrCreatePluginFile(vault);
 
     vault.process(pluginFile, (data) => {
         const parsedData = JSON.parse(data);
-        parsedData[randomUUID()] = details;
+        const todoItem: TodoItem = {
+            details,
+            path: file.path,
+        };
+        parsedData[randomUUID()] = todoItem;
         return JSON.stringify(parsedData);
     });
 }
 
+export async function getTodoItemsForFile(file: TFile): Promise<object[]> {
+    const vault = file.vault;
+    const pluginFile = await getOrCreatePluginFile(vault);
+
+    const content = await vault.read(pluginFile);
+    const parsedContent = JSON.parse(content) as Record<string, TodoItem>;
+
+    const results: TodoItem[] = [];
+    Object.keys(parsedContent).forEach((key) => {
+        const value = parsedContent[key];
+        if (value?.path === file.path) {
+            results.push(value);
+        }
+    });
+
+    return results;
+}
+
 async function getOrCreatePluginFile(vault: Vault): Promise<TFile> {
     const file = vault.getFileByPath(FILENAME);
-
-    console.log(file);
 
     if (file) {
         return file;
