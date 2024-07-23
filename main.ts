@@ -28,19 +28,19 @@ export default class MyPlugin extends Plugin {
         await this.loadSettings();
 
         this.registerEvent(
-            this.app.workspace.on("editor-menu", (menu, editor, view) => {
+            this.app.workspace.on("editor-menu", (menu, _, view) => {
                 menu.addItem((item) => {
                     item.setTitle("Add to-do item").onClick(async () => {
-                        new Notice(view.file?.path ?? "test");
                         new CreateTodoItemModal(this.app, (result) => {
-                            new Notice(
-                                `Created a new item to-do item. ${result}`
-                            );
-                            console.log("Right before creating a new todo");
                             if (!view.file) {
                                 return;
                             }
+
                             createTodo(this.app.vault, view.file, result);
+
+                            new Notice(
+                                `Created a new item to-do item. ${result}`
+                            );
                         }).open();
                     });
                 });
