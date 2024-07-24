@@ -3,7 +3,7 @@ import { TFile, Vault } from "obsidian";
 
 const FILENAME = "test.json";
 
-interface TodoItem {
+export interface TodoItem {
     details: string;
     path: string;
 }

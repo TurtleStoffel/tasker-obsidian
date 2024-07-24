@@ -9,7 +9,7 @@ import {
 } from "obsidian";
 import { CreateTodoItemModal } from "src/create-todo-item-modal";
 
-import { createTodo, getTodoItemsForFile } from "src/todo-manager";
+import { createTodo, getTodoItemsForFile, TodoItem } from "src/todo-manager";
 
 // Remember to rename these classes and interfaces!
 
@@ -53,6 +53,19 @@ export default class MyPlugin extends Plugin {
                     return;
                 }
                 const items = await getTodoItemsForFile(file);
+
+                let todoItemString = "";
+
+                items.forEach((item: TodoItem) => {
+                    todoItemString += `\n- Details: ${item.details}`;
+                });
+
+                file.vault.process(file, (content) => {
+                    return content.replace(
+                        /(.*)(---TODO---\n.*)$/gs,
+                        `$1---TODO---${todoItemString}`
+                    );
+                });
 
                 console.log(items);
             })
