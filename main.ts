@@ -56,7 +56,7 @@ export default class MyPlugin extends Plugin {
 
                 let todoItemString = "";
 
-                items.forEach((item: TodoItem) => {
+                items.forEach((item) => {
                     todoItemString += `\n- Details: ${item.details}`;
                 });
 

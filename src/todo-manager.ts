@@ -24,7 +24,7 @@ export async function createTodo(vault: Vault, file: TFile, details: string) {
     });
 }
 
-export async function getTodoItemsForFile(file: TFile): Promise<object[]> {
+export async function getTodoItemsForFile(file: TFile): Promise<TodoItem[]> {
     const vault = file.vault;
     const pluginFile = await getOrCreatePluginFile(vault);
 
